@@ -1,0 +1,39 @@
+{
+    "users": [
+        {
+            "username": "john_doe",
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john@example.com",
+            "birthDate": "1980-05-15"
+        },
+        {
+            "username": "jane_smith",
+            "firstName": "Jane",
+            "lastName": "Smith",
+            "email": "jane@example.com",
+            "birthDate": "1985-09-22"
+        },
+        {
+            "username": "bob_jones",
+            "firstName": "Bob",
+            "lastName": "Jones",
+            "email": "bob@example.com",
+            "birthDate": "1992-12-10"
+        },
+        {
+            "username": "alice_green",
+            "firstName": "Alice",
+            "lastName": "Green",
+            "email": "alice@example.com",
+            "birthDate": "1988-03-18"
+        },
+        {
+            "username": "sam_wilson",
+            "firstName": "Sam",
+            "lastName": "Wilson",
+            "email": "sam@example.com",
+            "birthDate": "1995-07-25"
+        }
+    ]
+}
