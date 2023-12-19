@@ -13,7 +13,7 @@ import (
 func main() {
 	router := chi.NewRouter()
 
-	// Middleware
+	// TODO: Middleware
 	router.Use(middleware.Logger)
 	// r.Use(middleware.RequestID)
 	// r.Use(middleware.Recoverer)
@@ -21,16 +21,23 @@ func main() {
 	// r.Use(render.SetContentType(render.ContentTypeJSON))
 
 	// Mount Routers
-	router.Mount("/category", routes.CategoryRouters())
-	router.Mount("/user", routes.UserRouters())
-	router.Mount("/expense", routes.ExpenseRouters())
+	router.Get("/", routes.ShowDoc)
+	router.Mount("/category", routes.CategoryRouter())
+	router.Mount("/user", routes.UserRouter())
+	router.Mount("/expense", routes.ExpenseRouter())
+
+	// Handle Errors
+	router.NotFound(routes.ResourceNotFound)
+	// TODO: router.MethodNotAllowed(routes.X)
 
 	// Create Server at specified port
+	port := 8080
 	server := &http.Server{
-		Addr:    ":3000",
+		Addr:    fmt.Sprintf(":%d", port),
 		Handler: router,
 	}
 
+	fmt.Printf("Server is starting on port %d...\n", port)
 	err := server.ListenAndServe()
 
 	if err != nil {
