@@ -1,11 +1,12 @@
 package models
 
+type User struct {
+	Username  string `json:"username"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Email     string `json:"email"`
+}
+
 type Users struct {
-	User []struct {
-		Username  string `json:"username"`
-		FirstName string `json:"firstName"`
-		LastName  string `json:"lastName"`
-		Email     string `json:"email"`
-		BirthDate string `json:"birthDate"`
-	} `json:"users"`
+	UserList []User `json:"users"`
 }
