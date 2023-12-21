@@ -12,8 +12,10 @@ import (
 )
 
 func CategoryRouter() chi.Router {
+	// Create new router for category endpoint
 	router := chi.NewRouter()
 
+	// Category endpoints
 	router.Get("/", listCategories)
 	router.Get("/{id}", displayCategory)
 	router.Get("/{id}/", displayCategory)
@@ -23,31 +25,45 @@ func CategoryRouter() chi.Router {
 }
 
 func listCategories(w http.ResponseWriter, r *http.Request) {
+	// Get categories
 	categories := utils.GetCategories()
 
+	// Encode categories
 	bytes, err := json.Marshal(categories)
 
+	// JSON Encoding error handling
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Unable to process your request, please try again!"))
 		fmt.Println(err)
 	}
 
+	// Send data as json
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(bytes)
 }
 
 func displayCategory(w http.ResponseWriter, r *http.Request) {
+	// Queried category
 	id := chi.URLParam(r, "id")
 
-	categories := utils.GetCategories().Category
+	// Get categories
+	categories := utils.GetCategories().CategoryList
 
+	// Check if category exists
 	for i := 0; i < len(categories); i++ {
 		if strings.EqualFold(categories[i].ID, id) {
+			// Encode category
 			bytes, err := json.Marshal(categories[i])
 
+			// JSON Encoding error handling
 			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Write([]byte("Unable to process your request, please try again!"))
 				fmt.Println(err)
 			}
 
+			// Send data as json
 			w.Header().Set("Content-Type", "application/json")
 			w.Write(bytes)
 
@@ -55,43 +71,57 @@ func displayCategory(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	// Send 404 if category not found
 	ResourceNotFound(w, r)
 }
 
 func searchCategory(w http.ResponseWriter, r *http.Request) {
+	// Get params from request
 	queryParams := r.URL.Query()
+
+	// Process the param
 	searchQuery := strings.ToLower(queryParams.Get("q"))
 
+	// Return 404 on empty request
 	if searchQuery == "" {
 		ResourceNotFound(w, r)
 		return
 	}
 
-	categories := utils.GetCategories().Category
+	// Get categories
+	categories := utils.GetCategories().CategoryList
 
+	// Create a new Category list to store matching categories in
 	var matchCategories models.Categories
 
+	// Search for categories
 	for i := 0; i < len(categories); i++ {
 		if strings.Contains(categories[i].ID, searchQuery) {
-			matchCategories.Category = append(matchCategories.Category, categories[i])
+			matchCategories.CategoryList = append(matchCategories.CategoryList, categories[i])
 		} else if strings.Contains(categories[i].Name, searchQuery) {
-			matchCategories.Category = append(matchCategories.Category, categories[i])
+			matchCategories.CategoryList = append(matchCategories.CategoryList, categories[i])
 		} else if strings.Contains(categories[i].Description, searchQuery) {
-			matchCategories.Category = append(matchCategories.Category, categories[i])
+			matchCategories.CategoryList = append(matchCategories.CategoryList, categories[i])
 		}
 	}
 
-	if len(matchCategories.Category) == 0 {
+	// If none found, return 404
+	if len(matchCategories.CategoryList) == 0 {
 		ResourceNotFound(w, r)
 		return
 	}
 
+	// Encode the new category list
 	bytes, err := json.Marshal(matchCategories)
 
+	// JSON Encoding error handling
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Unable to process your request, please try again!"))
 		fmt.Println(err)
 	}
 
+	// Send data as json
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(bytes)
 }
