@@ -81,3 +81,38 @@ func SaveUsers(users models.Users) bool {
 
 	return true
 }
+
+func GetExpenses() models.Expenses {
+	bytes, err := os.ReadFile("./data/expenses.json")
+
+	if err != nil {
+		fmt.Println("Error loading file: ", err)
+	}
+
+	var expenses models.Expenses
+	err = json.Unmarshal(bytes, &expenses)
+
+	if err != nil {
+		fmt.Println("Error parsing file: ", err)
+	}
+
+	return expenses
+}
+
+func SaveExpenses(expenses models.Expenses) bool {
+	bytes, err := json.MarshalIndent(expenses, "", "\t")
+
+	if err != nil {
+		fmt.Println("Error saving file: ", err)
+		return false
+	}
+
+	err = os.WriteFile("./data/expenses.json", bytes, 0666)
+
+	if err != nil {
+		fmt.Println("Error saving file: ", err)
+		return false
+	}
+
+	return true
+}
