@@ -21,7 +21,7 @@ func main() {
 	// r.Use(render.SetContentType(render.ContentTypeJSON))
 
 	// Mount Routers
-	router.Get("/", routes.ShowDoc)
+	router.Get("/", routes.ServeAPIDoc)
 	router.Mount("/category", routes.CategoryRouter())
 	router.Mount("/user", routes.UserRouter())
 	router.Mount("/expense", routes.ExpenseRouter())

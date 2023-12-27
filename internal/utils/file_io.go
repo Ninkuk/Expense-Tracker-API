@@ -8,6 +8,28 @@ import (
 	"github.com/ninkuk/expense-tracker-api/models"
 )
 
+func GetDocTXT() []byte {
+	bytes, err := os.ReadFile("./data/docs.txt")
+
+	if err != nil {
+		fmt.Println("Error loading file: ", err)
+		return nil
+	}
+
+	return bytes
+}
+
+func GetDocHTML() []byte {
+	bytes, err := os.ReadFile("./data/index.html")
+
+	if err != nil {
+		fmt.Println("Error loading file: ", err)
+		return nil
+	}
+
+	return bytes
+}
+
 func GetCategories() models.Categories {
 	bytes, err := os.ReadFile("./data/categories.json")
 
