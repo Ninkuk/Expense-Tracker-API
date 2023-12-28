@@ -8,7 +8,9 @@ import (
 	"github.com/ninkuk/expense-tracker-api/models"
 )
 
+// Get the documentation text file
 func GetDocTXT() []byte {
+	// Read file
 	bytes, err := os.ReadFile("./data/docs.txt")
 
 	if err != nil {
@@ -19,7 +21,9 @@ func GetDocTXT() []byte {
 	return bytes
 }
 
+// Get the documentation html file
 func GetDocHTML() []byte {
+	// Read file
 	bytes, err := os.ReadFile("./data/index.html")
 
 	if err != nil {
@@ -30,13 +34,16 @@ func GetDocHTML() []byte {
 	return bytes
 }
 
+// Read and parse the categories json
 func GetCategories() models.Categories {
+	// Read file
 	bytes, err := os.ReadFile("./data/categories.json")
 
 	if err != nil {
 		fmt.Println("Error loading file: ", err)
 	}
 
+	// Parse json
 	var cat models.Categories
 	err = json.Unmarshal(bytes, &cat)
 
@@ -47,13 +54,16 @@ func GetCategories() models.Categories {
 	return cat
 }
 
+// Read and parse the users json
 func GetUsers() models.Users {
+	// Read file
 	bytes, err := os.ReadFile("./data/users.json")
 
 	if err != nil {
 		fmt.Println("Error loading file: ", err)
 	}
 
+	// Parse json
 	var users models.Users
 	err = json.Unmarshal(bytes, &users)
 
@@ -64,7 +74,9 @@ func GetUsers() models.Users {
 	return users
 }
 
+// Save the users as json
 func SaveUsers(users models.Users) bool {
+	// Encode the data
 	bytes, err := json.MarshalIndent(users, "", "\t")
 
 	if err != nil {
@@ -72,6 +84,7 @@ func SaveUsers(users models.Users) bool {
 		return false
 	}
 
+	// Save json
 	err = os.WriteFile("./data/users.json", bytes, 0666)
 
 	if err != nil {
@@ -82,13 +95,16 @@ func SaveUsers(users models.Users) bool {
 	return true
 }
 
+// Read and parse the expenses json
 func GetExpenses() models.Expenses {
+	// Read file
 	bytes, err := os.ReadFile("./data/expenses.json")
 
 	if err != nil {
 		fmt.Println("Error loading file: ", err)
 	}
 
+	// Parse json
 	var expenses models.Expenses
 	err = json.Unmarshal(bytes, &expenses)
 
@@ -99,7 +115,9 @@ func GetExpenses() models.Expenses {
 	return expenses
 }
 
+// Save the expenses as json
 func SaveExpenses(expenses models.Expenses) bool {
+	// Encode the data
 	bytes, err := json.MarshalIndent(expenses, "", "\t")
 
 	if err != nil {
@@ -107,6 +125,7 @@ func SaveExpenses(expenses models.Expenses) bool {
 		return false
 	}
 
+	// Save json
 	err = os.WriteFile("./data/expenses.json", bytes, 0666)
 
 	if err != nil {

@@ -11,20 +11,22 @@ import (
 	"github.com/ninkuk/expense-tracker-api/models"
 )
 
+// Router for user endpoints
 func UserRouter() chi.Router {
-	// Create new router for user endpoint
+	// Create new router
 	router := chi.NewRouter()
 
-	// User endpoints
+	// sub-routes
 	router.Get("/", listUsers)
+	router.Post("/", createNewUser)
 	router.Get("/{username}", displayUser)
-	router.Get("/{username}/", displayUser)
-	router.Post("/new", createNewUser)
-	router.Put("/edit/{username}", editUser)
+	router.Put("/{username}", editUser)
+	router.Get("/{username}/expenses", listExpenses)
 
 	return router
 }
 
+// Get a list of users
 func listUsers(w http.ResponseWriter, r *http.Request) {
 	// Get existing users
 	users := utils.GetUsers()
@@ -44,6 +46,7 @@ func listUsers(w http.ResponseWriter, r *http.Request) {
 	w.Write(bytes)
 }
 
+// Get details of a specific user by username
 func displayUser(w http.ResponseWriter, r *http.Request) {
 	// Queried username
 	username := strings.ToLower(chi.URLParam(r, "username"))
@@ -76,6 +79,7 @@ func displayUser(w http.ResponseWriter, r *http.Request) {
 	ResourceNotFound(w, r)
 }
 
+// Create a new user record
 func createNewUser(w http.ResponseWriter, r *http.Request) {
 	// Get params from request
 	queryParams := r.URL.Query()
@@ -119,6 +123,7 @@ func createNewUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Update details of a specific user by username
 func editUser(w http.ResponseWriter, r *http.Request) {
 	// Username to be edited
 	username := strings.ToLower(chi.URLParam(r, "username"))
@@ -155,15 +160,12 @@ func editUser(w http.ResponseWriter, r *http.Request) {
 			// Save the user list as json
 			if utils.SaveUsers(users) {
 				w.WriteHeader(http.StatusOK)
-				w.Write([]byte("Successfully added new user!"))
+				w.Write([]byte("Successfully edited user!"))
 			} else {
 				w.WriteHeader(http.StatusInternalServerError)
 				w.Write([]byte("Unable to edit user, please try again!"))
 			}
 
-			// Return success
-			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(fmt.Sprintf("Successfully edited %v!", username)))
 			return
 		}
 	}

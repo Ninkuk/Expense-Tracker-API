@@ -11,19 +11,20 @@ import (
 	"github.com/ninkuk/expense-tracker-api/models"
 )
 
+// Router for category endpoints
 func CategoryRouter() chi.Router {
-	// Create new router for category endpoint
+	// Create new router
 	router := chi.NewRouter()
 
-	// Category endpoints
+	// sub-routes
 	router.Get("/", listCategories)
-	router.Get("/{id}", displayCategory)
-	router.Get("/{id}/", displayCategory)
 	router.Get("/search", searchCategory)
+	router.Get("/{id}", displayCategory)
 
 	return router
 }
 
+// Get a list of expense categories
 func listCategories(w http.ResponseWriter, r *http.Request) {
 	// Get categories
 	categories := utils.GetCategories()
@@ -43,6 +44,7 @@ func listCategories(w http.ResponseWriter, r *http.Request) {
 	w.Write(bytes)
 }
 
+// Get details of a specific category by ID
 func displayCategory(w http.ResponseWriter, r *http.Request) {
 	// Queried category
 	id := chi.URLParam(r, "id")
@@ -75,6 +77,7 @@ func displayCategory(w http.ResponseWriter, r *http.Request) {
 	ResourceNotFound(w, r)
 }
 
+// Find categories with provided query
 func searchCategory(w http.ResponseWriter, r *http.Request) {
 	// Get params from request
 	queryParams := r.URL.Query()

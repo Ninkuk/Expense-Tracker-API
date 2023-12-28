@@ -11,11 +11,12 @@ import (
 	"github.com/ninkuk/expense-tracker-api/models"
 )
 
+// Router for expense endpoints
 func ExpenseRouter() chi.Router {
-	// Create new router for expenses endpoint
+	// Create new router
 	router := chi.NewRouter()
 
-	// Expense Endpoints
+	// sub-routes
 	router.Get("/", listExpenses)
 	router.Post("/", createNewExpense)
 	router.Get("/filter", filterExpenses)
@@ -27,8 +28,9 @@ func ExpenseRouter() chi.Router {
 	return router
 }
 
+// Get a list of all expenses
 func listExpenses(w http.ResponseWriter, r *http.Request) {
-	// Get existing expenses
+	// Get expenses
 	expenses := utils.GetExpenses()
 
 	// Encode expenses
@@ -46,6 +48,7 @@ func listExpenses(w http.ResponseWriter, r *http.Request) {
 	w.Write(bytes)
 }
 
+// Create a new expense record
 func createNewExpense(w http.ResponseWriter, r *http.Request) {
 	// Get params from request
 	queryParams := r.URL.Query()
@@ -104,6 +107,7 @@ func createNewExpense(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Filter expenses by category and date
 func filterExpenses(w http.ResponseWriter, r *http.Request) {
 	// Get params from request
 	queryParams := r.URL.Query()
@@ -148,6 +152,7 @@ func filterExpenses(w http.ResponseWriter, r *http.Request) {
 	w.Write(bytes)
 }
 
+// Get a summary of expenses
 func summarizeExpenses(w http.ResponseWriter, r *http.Request) {
 	// Get Expenses
 	expenses := utils.GetExpenses().ExpenseList
@@ -183,6 +188,7 @@ func summarizeExpenses(w http.ResponseWriter, r *http.Request) {
 	w.Write(bytes)
 }
 
+// Get details of a specific expense by ID
 func displayExpense(w http.ResponseWriter, r *http.Request) {
 	// Queried expense
 	id := chi.URLParam(r, "id")
@@ -215,6 +221,7 @@ func displayExpense(w http.ResponseWriter, r *http.Request) {
 	ResourceNotFound(w, r)
 }
 
+// Update details of a specific expense by ID
 func editExpense(w http.ResponseWriter, r *http.Request) {
 	// Get params from request
 	queryParams := r.URL.Query()
@@ -265,6 +272,7 @@ func editExpense(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Delete a specific expense by ID
 func deleteExpense(w http.ResponseWriter, r *http.Request) {
 	// Queried expense
 	id := chi.URLParam(r, "id")
