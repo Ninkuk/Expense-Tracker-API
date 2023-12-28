@@ -13,12 +13,12 @@ import (
 func main() {
 	router := chi.NewRouter()
 
-	// TODO: Middleware
+	// Middleware
 	router.Use(middleware.Logger)
-	// r.Use(middleware.RequestID)
-	// r.Use(middleware.Recoverer)
-	// r.Use(middleware.URLFormat)
-	// r.Use(render.SetContentType(render.ContentTypeJSON))
+	router.Use(middleware.CleanPath)
+	router.Use(middleware.Heartbeat("/ping"))
+	router.Use(middleware.Recoverer)
+	router.Use(middleware.RedirectSlashes)
 
 	// Mount Routers
 	router.Get("/", routes.ServeAPIDoc)
@@ -26,9 +26,8 @@ func main() {
 	router.Mount("/user", routes.UserRouter())
 	router.Mount("/expense", routes.ExpenseRouter())
 
-	// Handle Errors
+	// Handle 404
 	router.NotFound(routes.ResourceNotFound)
-	// TODO: router.MethodNotAllowed(routes.X)
 
 	// Create Server at specified port
 	port := 8080
@@ -37,6 +36,7 @@ func main() {
 		Handler: router,
 	}
 
+	// Start the server
 	fmt.Printf("Server is starting on port %d...\n", port)
 	err := server.ListenAndServe()
 
