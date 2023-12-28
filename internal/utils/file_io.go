@@ -24,7 +24,7 @@ func GetDocTXT() []byte {
 // Get the documentation html file
 func GetDocHTML() []byte {
 	// Read file
-	bytes, err := os.ReadFile("./data/index.html")
+	bytes, err := os.ReadFile("./docs/index.html")
 
 	if err != nil {
 		fmt.Println("Error loading file: ", err)
@@ -37,7 +37,7 @@ func GetDocHTML() []byte {
 // Read and parse the categories json
 func GetCategories() models.Categories {
 	// Read file
-	bytes, err := os.ReadFile("./data/categories.json")
+	bytes, err := os.ReadFile("./docs/categories.json")
 
 	if err != nil {
 		fmt.Println("Error loading file: ", err)
